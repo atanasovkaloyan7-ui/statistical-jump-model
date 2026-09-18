@@ -1,0 +1,20 @@
+# Licensed vendor price data -- NOT redistributed. Rebuild it yourself:
+#     python data/fetch_sleeves.py --source sharadar
+data/sleeve_closeadj.parquet
+data/sleeve_coverage.csv
+data/my_regime.csv
+
+# secrets
+.env
+*.key
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# os
+.DS_Store
+Thumbs.db
