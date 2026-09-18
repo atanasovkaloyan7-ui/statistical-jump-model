@@ -53,6 +53,7 @@ from .sleeves import (rebalanced, overlay_sleeve, build_portfolio, load_sleeves,
 from .controls import (exposure_matched_control, vol_matched, regime_split,
                        weight_perturbation, episode_table, full_battery,
                        CRISES)
+from .live import fit_and_freeze, LiveSignal, check_label_stability
 
 __version__ = "1.0.0"
 
@@ -80,4 +81,6 @@ __all__ = [
     # controls
     "exposure_matched_control", "vol_matched", "regime_split",
     "weight_perturbation", "episode_table", "full_battery", "CRISES",
+    # deployment
+    "fit_and_freeze", "LiveSignal", "check_label_stability",
 ]

@@ -97,7 +97,26 @@ python examples/01_fit_detector.py         # fit a detector on any price series
 python examples/02_overlay_your_signal.py  # bring your own 0/1 signal
 python examples/03_multiasset_sleeves.py   # the full stack
 python examples/04_run_all_controls.py     # the battery (run this before believing anything)
+python examples/05_deploy_live.py          # refit + daily signal loop
 ```
+
+### Deploying it
+
+The jump model is a **training-time object** — it never runs in production.
+Today's signal is one forward pass through a frozen classifier:
+
+```python
+from drawdown_kit import fit_and_freeze, LiveSignal
+
+fit_and_freeze(returns_through_last_year, "artifacts/")   # occasionally
+sig = LiveSignal("artifacts/", bear_exposure=0.50)
+out = sig.update(returns_through_today)                   # every day
+out["target_exposure"]   # -> trade this at the NEXT close
+```
+
+`LiveSignal` persists the hysteresis state to disk between runs. That matters:
+the gate is path-dependent, so a process restart that reinitialised to bull
+would silently put you fully invested in the middle of a bear regime.
 
 ---
 
@@ -156,6 +175,7 @@ drawdown_kit/
   features.py     12 causal features; TrainScaler (fit on train only)
   overlay.py      apply_overlay, evaluate, crisis_report, the lag guard
   sleeves.py      static multi-asset layer: rebalanced(), build_portfolio()
+  live.py         deployment: fit_and_freeze(), LiveSignal, label-flip alarm
   controls.py     the battery
   benchmarks.py   MA200, 50/200, momentum, vol-quantile, random, always-bull
   compare.py      score many signals through one identical harness
